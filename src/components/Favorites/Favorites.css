@@ -1,0 +1,6 @@
+.favorites {
+  display: flex;
+  flex-direction: row;
+  gap: 116px;
+  padding-bottom: 80px;
+}

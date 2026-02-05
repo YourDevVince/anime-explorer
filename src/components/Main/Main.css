@@ -1,0 +1,27 @@
+.main {
+  flex: 1 0 auto;
+}
+
+.cards__text {
+  margin: 40px 0 34px 0;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.cards__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@media (max-width: 749px) {
+  .cards__list {
+    justify-content: space-around;
+  }
+}
