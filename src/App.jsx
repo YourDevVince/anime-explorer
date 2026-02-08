@@ -1,10 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './App.css';
+
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Favorites from './components/Favorites/Favorites';
 import Footer from './components/Footer/Footer';
+import ItemModal from './components/ItemModal/ItemModal';
 
 function App() {
   const [favorites, setFavorites] = useState(() => {
@@ -32,15 +34,32 @@ function App() {
     });
   };
 
+  // modal state
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const openModal = (item) => setSelectedItem(item);
+  const closeModal = () => setSelectedItem(null);
+
+  const isFavorited = useMemo(() => {
+    if (!selectedItem) return false;
+    const key = selectedItem.mal_id ?? selectedItem.id;
+    return favorites.some((fav) => (fav.mal_id ?? fav.id) === key);
+  }, [favorites, selectedItem]);
+
   return (
     <div className='app'>
       <div className='app__content'>
         <Header />
+
         <Routes>
           <Route
             path='/'
             element={
-              <Main favoritesItems={favorites} onCardLike={toggleFavorite} />
+              <Main
+                favoritesItems={favorites}
+                onCardLike={toggleFavorite}
+                onCardClick={openModal}
+              />
             }
           />
           <Route
@@ -49,12 +68,22 @@ function App() {
               <Favorites
                 favoritesItems={favorites}
                 onCardLike={toggleFavorite}
+                onCardClick={openModal}
               />
             }
           />
         </Routes>
+
         <Footer />
       </div>
+
+      <ItemModal
+        isOpen={Boolean(selectedItem)}
+        item={selectedItem}
+        onClose={closeModal}
+        onToggleFavorite={toggleFavorite}
+        isFavorited={isFavorited}
+      />
     </div>
   );
 }

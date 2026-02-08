@@ -5,7 +5,11 @@ import ItemCard from '../ItemCard/ItemCard';
 
 const PAGE_SIZE = 3;
 
-export default function FavoritesSection({ favoritesItems = [], onCardLike }) {
+export default function FavoritesSection({
+  favoritesItems = [],
+  onCardLike,
+  onCardClick,
+}) {
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -45,7 +49,8 @@ export default function FavoritesSection({ favoritesItems = [], onCardLike }) {
                 key={anime.mal_id ?? anime.id ?? anime.title}
                 item={anime}
                 onCardLike={onCardLike}
-                isFavorite
+                favoritesItems={favoritesItems}
+                onCardClick={onCardClick}
               />
             ))}
           </ul>
