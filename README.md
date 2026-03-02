@@ -33,6 +33,11 @@ This project uses the Jikan REST API:
 - Base URL: `https://api.jikan.moe/v4`
 - Search endpoint: `GET /anime?q=<query>&limit=<limit>&page=<page>`
 
+## Project Pitch Video
+
+Check out [this video](https://drive.google.com/file/d/1jJ8QCIaCLDnUA5PLWqsLaG7FZLsh_-_d/view?usp=sharing), where I describe my
+project and some challenges I faced while building it.
+
 ## User Flow
 
 - App renders `Header`, `Main`, and `Footer`
