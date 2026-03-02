@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import './ItemModal.css';
+import closeIcon from '../../assets/close.svg';
 
 function ItemModal({ isOpen, item, onClose, onToggleFavorite, isFavorited }) {
   useEffect(() => {
@@ -11,7 +12,6 @@ function ItemModal({ isOpen, item, onClose, onToggleFavorite, isFavorited }) {
 
     document.addEventListener('keydown', handleEsc);
 
-    // optional: prevent background scroll
     document.body.style.overflow = 'hidden';
 
     return () => {
@@ -45,11 +45,17 @@ function ItemModal({ isOpen, item, onClose, onToggleFavorite, isFavorited }) {
           className='modal__close'
           onClick={onClose}
           aria-label='Close'
-        />
+        >
+          <img src={closeIcon} alt='a close icon' />
+        </button>
 
-        {imageUrl && (
-          <img src={imageUrl} alt={title} className='modal__image' />
-        )}
+        <div className='modal__image-wrap'>
+          {imageUrl ? (
+            <img src={imageUrl} alt={title} className='modal__image' />
+          ) : (
+            <div className='modal__image-placeholder'>No image available</div>
+          )}
+        </div>
 
         <div className='modal__footer'>
           <div className='modal__text'>

@@ -1,7 +1,10 @@
 import { useMemo, useState } from 'react';
+
+import './Main.css';
 import SearchBar from '../SearchBar/SearchBar';
 import ItemCard from '../ItemCard/ItemCard';
 import { searchAnime } from '../../utils/animeApi';
+import Preloader from '../Preloader/Preloader';
 
 const PAGE_SIZE = 3;
 
@@ -10,8 +13,7 @@ export default function Main({ favoritesItems = [], onCardLike, onCardClick }) {
   const [results, setResults] = useState([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const visibleResults = useMemo(
     () => results.slice(0, visibleCount),
     [results, visibleCount],
@@ -20,25 +22,25 @@ export default function Main({ favoritesItems = [], onCardLike, onCardClick }) {
   const canShowMore = visibleCount < results.length;
 
   const handleSearchSubmit = async () => {
-    const q = searchInput.trim();
-    if (!q) return;
+    const query = searchInput.trim();
+    if (!query) return;
 
     setIsLoading(true);
-    setError('');
+
     setVisibleCount(PAGE_SIZE);
 
     try {
-      const data = await searchAnime({ q, limit: 24, page: 1 });
+      const data = await searchAnime({ q: query, limit: 24, page: 1 });
       const items = data?.data || [];
 
       setResults(items);
 
       if (items.length === 0) {
-        setError('Nothing found');
+        throw new Error('Nothing found');
       }
     } catch (e) {
       setResults([]);
-      setError(
+      console.error(
         'Sorry, something went wrong during the request. There may be a connection issue or the server may be down. Please try again later.',
       );
     } finally {
@@ -46,8 +48,21 @@ export default function Main({ favoritesItems = [], onCardLike, onCardClick }) {
     }
   };
 
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount((c) => c + PAGE_SIZE);
+      setIsLoadingMore(false);
+    }, 1000);
+  };
+
   return (
     <main className='main'>
+      <header className='main__header'>
+        <h1 className='main__title'>Search for an anime</h1>
+        <p className='main__subtext'>Just type in an anime below</p>
+      </header>
+
       <SearchBar
         value={searchInput}
         onChange={setSearchInput}
@@ -55,11 +70,9 @@ export default function Main({ favoritesItems = [], onCardLike, onCardClick }) {
         isLoading={isLoading}
       />
 
-      {isLoading && <div className='preloader'>Searching for anime...</div>}
-      {/* ill remove this later  */}
-      {!isLoading && error && <p className='main__message'>{error}</p>}
+      {isLoading && visibleResults.length === 0 && <Preloader />}
 
-      {!isLoading && !error && (
+      {(!isLoading || visibleResults.length > 0) && (
         <>
           <ul className='cards__list'>
             {visibleResults.map((anime) => (
@@ -73,10 +86,11 @@ export default function Main({ favoritesItems = [], onCardLike, onCardClick }) {
             ))}
           </ul>
 
-          {results.length > 3 && (
+          {results.length > 3 && !isLoadingMore && (
             <button
+              className='more-btn'
               type='button'
-              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              onClick={handleLoadMore}
               disabled={!canShowMore}
             >
               {canShowMore ? 'More' : 'No more'}

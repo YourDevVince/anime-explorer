@@ -23,14 +23,6 @@ export default function FavoritesSection({
   return (
     <main className='favorites-section'>
       <div className='favorites-section__header'>
-        <button
-          type='button'
-          className='favorites-section__back-btn'
-          onClick={() => navigate(-1)}
-        >
-          ← Back
-        </button>
-
         <h2 className='favorites-section__title'>Favorites</h2>
         <p className='favorites-section__count'>
           {favoritesItems.length} saved
@@ -38,9 +30,19 @@ export default function FavoritesSection({
       </div>
 
       {favoritesItems.length === 0 ? (
-        <p className='favorites-section__empty'>
-          No favorites yet. Go like some anime!
-        </p>
+        <>
+          <p className='favorites-section__empty'>
+            No favorites yet. Go like some anime!
+          </p>
+          <br />
+          <button
+            type='button'
+            className='favorites-section__back-btn'
+            onClick={() => navigate(-1)}
+          >
+            Take me home
+          </button>
+        </>
       ) : (
         <>
           <ul className='favorites-section__list'>

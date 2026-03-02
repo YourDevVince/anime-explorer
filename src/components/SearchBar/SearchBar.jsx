@@ -3,7 +3,7 @@ import './SearchBar.css';
 export default function SearchBar({ value, onChange, onSubmit, isLoading }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(); // Main decides what to do with the current value
+    onSubmit();
   };
 
   return (
