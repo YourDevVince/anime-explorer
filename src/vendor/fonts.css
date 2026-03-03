@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'OVSoge';
+  font-style: normal;
+  font-weight: 300;
+  src: url('./fonts/OVSoge-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'OVSoge';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/OVSoge-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'OVSoge';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/OVSoge-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'OVSoge';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/OVSoge-Bold.otf') format('opentype');
+}
